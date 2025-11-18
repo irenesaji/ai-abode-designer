@@ -62,29 +62,24 @@ const Index = () => {
 
   const handleGenerate = async () => {
     setIsGenerating(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('generate-house-design', {
-        body: { preferences }
-      });
-
-      if (error) throw error;
-
-      setDesigns(data.designs);
+    // Simulate API call
+    setTimeout(() => {
+      const { architecturalStyle, colorScheme } = preferences;
+      const staticDesigns = [
+        { view: "front_view", imageUrl: `https://picsum.photos/seed/house-${architecturalStyle}-${colorScheme}-front/800/600` },
+        { view: "back_view", imageUrl: `https://picsum.photos/seed/house-${architecturalStyle}-${colorScheme}-back/800/600` },
+        { view: "top_view", imageUrl: `https://picsum.photos/seed/house-${architecturalStyle}-${colorScheme}-top/800/600` },
+        { view: "side_view", imageUrl: `https://picsum.photos/seed/house-${architecturalStyle}-${colorScheme}-side/800/600` },
+        { view: "floor_plan", imageUrl: `https://picsum.photos/seed/house-${architecturalStyle}-${colorScheme}-floor/800/600` },
+      ];
+      setDesigns(staticDesigns);
       setShowResults(true);
+      setIsGenerating(false);
       toast({
         title: "Design Generated!",
         description: "Your AI house design is ready to view."
       });
-    } catch (error) {
-      console.error('Error generating design:', error);
-      toast({
-        title: "Generation Failed",
-        description: "Failed to generate house design. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsGenerating(false);
-    }
+    }, 2000);
   };
 
   if (showResults) {
